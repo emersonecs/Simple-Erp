@@ -9,6 +9,7 @@ namespace ERP.Application.AutoMapper
         public DomainToViewModelMappingProfile()
         {
             CreateMap<Category, CategoryViewModel>();
+            CreateMap<Supplier, SupplierViewModel>();
         }
     }
 }

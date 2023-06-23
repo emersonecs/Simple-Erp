@@ -10,6 +10,9 @@ namespace ERP.Application.AutoMapper
         {
             CreateMap<CategoryInsertViewModel, Category>()
                 .ConstructUsing(x => new Category(x.Name, x.Description));
+
+            CreateMap<SupplierInsertViewModel, Supplier>()
+                .ConstructUsing(x => new Supplier(x.Name, x.Address, x.PhoneNumber, x.Email));
         }
     }
 }
