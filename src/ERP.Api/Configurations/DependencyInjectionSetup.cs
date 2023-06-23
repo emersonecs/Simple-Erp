@@ -17,6 +17,10 @@ namespace ERP.Api.Configurations
             services.AddScoped<ISupplierAppService, SupplierAppService>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
 
+            services.AddScoped<IProductAppService, ProductAppService>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+
+
             services.AddScoped<NotificationContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }

@@ -19,6 +19,8 @@ namespace ERP.Domain.Models
         public string Email { get; set; }
         public DateTime CreationDate { get; }
 
+        public List<Product> Products { get; set; }
+
         public void Update(string name, string address, string phoneNumber, string email)
         {
             Name = name;

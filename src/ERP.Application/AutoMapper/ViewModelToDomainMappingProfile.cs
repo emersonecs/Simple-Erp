@@ -13,6 +13,9 @@ namespace ERP.Application.AutoMapper
 
             CreateMap<SupplierInsertViewModel, Supplier>()
                 .ConstructUsing(x => new Supplier(x.Name, x.Address, x.PhoneNumber, x.Email));
+
+            CreateMap<ProductInsertViewModel, Product>()
+                .ConstructUsing(x => new Product(x.Name, x.Description, x.CodeBars, x.Price, x.StockQuantity, x.SupplierId, x.CategoryId));
         }
     }
 }

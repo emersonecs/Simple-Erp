@@ -13,6 +13,7 @@ namespace ERP.Infra.Data.Context
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -51,6 +52,39 @@ namespace ERP.Infra.Data.Context
                     .HasDefaultValueSql("Getdate()")
                     .ValueGeneratedOnAdd();
 
+            });
+
+            builder.Entity<Product>(entity =>
+            {
+                entity.Property(x => x.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(x => x.Name)
+                    .HasMaxLength(100)
+                    .IsRequired();
+
+                entity.Property(x => x.Description)
+                    .HasMaxLength(300);
+
+                entity.Property(x => x.CodeBars)
+                    .HasMaxLength(50);
+
+                entity.Property(x => x.Price)
+                    .HasPrecision(10, 2);
+
+                entity.Property(x => x.StockQuantity);
+
+                entity.Property(x => x.CreationDate)
+                    .HasDefaultValueSql("Getdate()")
+                    .ValueGeneratedOnAdd();
+
+                entity.HasOne(x => x.Supplier)
+                    .WithMany(x => x.Products)
+                    .HasForeignKey(x => x.SupplierId);
+
+                entity.HasOne(x => x.Category)
+                    .WithMany(x => x.Products)
+                    .HasForeignKey(x => x.CategoryId);
             });
         }
     }
