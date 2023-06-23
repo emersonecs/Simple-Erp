@@ -21,7 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.EnableSensitiveDataLogging();
 #endif
 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration["DbConnection"]);
 });
 
 builder.Services.AddControllers();
