@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using ERP.Application.ViewModels;
+using ERP.Domain.Models;
 
 namespace ERP.Application.AutoMapper
 {
@@ -6,7 +8,7 @@ namespace ERP.Application.AutoMapper
     {
         public DomainToViewModelMappingProfile()
         {
-
+            CreateMap<Category, CategoryViewModel>();
         }
     }
 }

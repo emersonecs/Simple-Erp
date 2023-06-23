@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ERP.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ERP.Infra.Data.Context
@@ -15,8 +16,22 @@ namespace ERP.Infra.Data.Context
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
+        public DbSet<Category> Categories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Category>(entity =>
+            {
+                entity.Property(x => x.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(x => x.Name)
+                    .HasMaxLength(100)
+                    .IsRequired();
+
+                entity.Property(x => x.Description)
+                    .HasMaxLength(100);
+            });
         }
     }
 }
