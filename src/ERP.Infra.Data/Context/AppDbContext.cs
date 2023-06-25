@@ -14,6 +14,7 @@ namespace ERP.Infra.Data.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Client> Clients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -85,6 +86,31 @@ namespace ERP.Infra.Data.Context
                 entity.HasOne(x => x.Category)
                     .WithMany(x => x.Products)
                     .HasForeignKey(x => x.CategoryId);
+            });
+
+            builder.Entity<Client>(entity =>
+            {
+                entity.Property(x => x.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(x => x.Name)
+                    .HasMaxLength(100)
+                    .IsRequired();
+
+                entity.Property(x => x.Address)
+                    .HasMaxLength(200);
+
+                entity.Property(x => x.District)
+                    .HasMaxLength(100);
+
+                entity.Property(x => x.Number);
+
+                entity.Property(x => x.Email)
+                    .HasMaxLength(200);
+
+                entity.Property(x => x.Phone)
+                    .HasMaxLength(20);
+
             });
         }
     }

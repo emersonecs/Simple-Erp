@@ -20,6 +20,9 @@ namespace ERP.Api.Configurations
             services.AddScoped<IProductAppService, ProductAppService>();
             services.AddScoped<IProductRepository, ProductRepository>();
 
+            services.AddScoped<IClientAppService, ClientAppService>();
+            services.AddScoped<IClientRepository, ClientRepository>();
+
 
             services.AddScoped<NotificationContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
