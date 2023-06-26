@@ -15,8 +15,9 @@ namespace ERP.Infra.Data.Context
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<Order> Orders{ get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Category>(entity =>
             {
@@ -111,6 +112,33 @@ namespace ERP.Infra.Data.Context
                 entity.Property(x => x.Phone)
                     .HasMaxLength(20);
 
+            });
+
+            builder.Entity<Order>(entity =>
+            {
+                entity.Property(x => x.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(x => x.ClientId)
+                    .IsRequired();
+
+                entity.Property(x => x.CreationDate)
+                    .HasDefaultValueSql("Getdate()")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(x => x.PaymentMethod)
+                    .IsRequired();
+
+                entity.Property(x => x.OrderStatus)
+                    .IsRequired();
+
+                entity.Property(x => x.Total)
+                    .HasPrecision(10, 2)
+                    .IsRequired();
+
+                entity.HasOne(x => x.Client)
+                    .WithMany(x => x.Orders)
+                    .HasForeignKey(x => x.ClientId);
             });
         }
     }

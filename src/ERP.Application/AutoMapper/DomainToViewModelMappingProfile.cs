@@ -12,6 +12,7 @@ namespace ERP.Application.AutoMapper
             CreateMap<Supplier, SupplierViewModel>();
             CreateMap<Product, ProductViewModel>();
             CreateMap<Client, ClientViewModel>();
+            CreateMap<Order, OrderViewModel>();
         }
     }
 }

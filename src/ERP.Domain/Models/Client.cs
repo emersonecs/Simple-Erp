@@ -21,6 +21,7 @@ namespace ERP.Domain.Models
         public int Number { get; set; }
         public string Email{ get; set; }
         public string Phone { get; set; }
+        public List<Order> Orders { get; set; }
 
         public void Update(string name, string address, string district, int number, string email, string phone)
         {
