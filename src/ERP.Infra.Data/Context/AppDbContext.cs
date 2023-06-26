@@ -68,7 +68,7 @@ namespace ERP.Infra.Data.Context
                 entity.Property(x => x.Description)
                     .HasMaxLength(300);
 
-                entity.Property(x => x.CodeBars)
+                entity.Property(x => x.BarCode)
                     .HasMaxLength(50);
 
                 entity.Property(x => x.Price)

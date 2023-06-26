@@ -2,11 +2,11 @@ namespace ERP.Domain.Models
 {
     public class Product
     {
-        public Product(string name, string description, string codeBars, decimal price, int stockQuantity, int? supplierId, int? categoryId)
+        public Product(string name, string description, string barCode, decimal price, int stockQuantity, int? supplierId, int? categoryId)
         {
             Name = name;
             Description = description;
-            CodeBars = codeBars;
+            BarCode = barCode;
             Price = price;
             StockQuantity = stockQuantity;
             SupplierId = supplierId;
@@ -18,7 +18,7 @@ namespace ERP.Domain.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string CodeBars { get; set; }
+        public string BarCode { get; set; }
         public decimal Price { get; set; }
         public int StockQuantity { get; set; }
         public DateTime CreationDate { get; }
@@ -29,11 +29,11 @@ namespace ERP.Domain.Models
         public Supplier? Supplier { get; set; }
         public Category? Category { get; set; }
 
-        public void Update(string name, string description, string codeBars, decimal price, int stockQuantity, int? supplierId, int? categoryId)
+        public void Update(string name, string description, string barCode, decimal price, int stockQuantity, int? supplierId, int? categoryId)
         {
             Name = name;
             Description = description;
-            CodeBars = codeBars;
+            BarCode = barCode;
             Price = price;
             StockQuantity = stockQuantity;
             SupplierId = supplierId;

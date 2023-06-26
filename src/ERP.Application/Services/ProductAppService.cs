@@ -50,7 +50,7 @@ namespace ERP.Application.Services
                 return;
             }
 
-            product.Update(productViewModel.Name, productViewModel.Description, productViewModel.CodeBars, productViewModel.Price, productViewModel.StockQuantity, productViewModel.SupplierId, productViewModel.CategoryId);
+            product.Update(productViewModel.Name, productViewModel.Description, productViewModel.BarCode, productViewModel.Price, productViewModel.StockQuantity, productViewModel.SupplierId, productViewModel.CategoryId);
 
             _productRepository.Update(product);
         }
