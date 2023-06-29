@@ -4,7 +4,6 @@ namespace ERP.Application.ViewModels
 {
     public class ProductViewModel
     {
-
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -34,8 +33,6 @@ namespace ERP.Application.ViewModels
         [Range(0, int.MaxValue, ErrorMessage = "The field {0} must be greater than {1}.")]
         public int StockQuantity { get; set; }
 
-        public DateTime CreationDate { get; }
-
         public int? SupplierId { get; set; }
 
         public int? CategoryId { get; set; }
@@ -60,8 +57,6 @@ namespace ERP.Application.ViewModels
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "The field {0} must be greater than {1}.")]
         public int StockQuantity { get; set; }
-
-        public DateTime CreationDate { get; }
 
         public int? SupplierId { get; set; }
 
