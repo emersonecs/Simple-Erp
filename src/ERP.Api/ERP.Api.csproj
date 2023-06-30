@@ -21,8 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ERP.Application\ERP.Application.csproj" />
-    <ProjectReference Include="..\ERP.Domain\ERP.Domain.csproj" />
-    <ProjectReference Include="..\ERP.Infra.Data\ERP.Infra.Data.csproj" />
   </ItemGroup>
 
 </Project>

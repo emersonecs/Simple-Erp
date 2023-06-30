@@ -1,7 +1,6 @@
 using ERP.Application.Interfaces;
 using ERP.Application.ViewModels;
 using ERP.Domain.Notification;
-using ERP.Infra.Data.Context;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.Api.Controllers
@@ -11,12 +10,10 @@ namespace ERP.Api.Controllers
     public class SuppliersController : BaseController
     {
         private readonly ISupplierAppService _supplierAppService;
-        private readonly IUnitOfWork _uow;
 
-        public SuppliersController(NotificationContext notificationContext, ISupplierAppService supplierAppService, IUnitOfWork uow) : base(notificationContext)
+        public SuppliersController(NotificationContext notificationContext, ISupplierAppService supplierAppService) : base(notificationContext)
         {
             _supplierAppService = supplierAppService;
-            _uow = uow;
         }
 
         [HttpGet]
@@ -40,8 +37,6 @@ namespace ERP.Api.Controllers
         {
             await _supplierAppService.Insert(supplierViewModel);
 
-            await _uow.SaveChangesAsync();
-
             return Response();
         }
 
@@ -50,8 +45,6 @@ namespace ERP.Api.Controllers
         {
             await _supplierAppService.Update(id, supplierViewModel);
 
-            await _uow.SaveChangesAsync();
-
             return Response();
         }
 
@@ -59,9 +52,7 @@ namespace ERP.Api.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _supplierAppService.Delete(id);
-
-            await _uow.SaveChangesAsync();
-
+            
             return Response();
         }
     }

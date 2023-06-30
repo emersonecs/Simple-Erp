@@ -1,7 +1,6 @@
 using ERP.Application.Interfaces;
 using ERP.Application.ViewModels;
 using ERP.Domain.Notification;
-using ERP.Infra.Data.Context;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.Api.Controllers
@@ -11,12 +10,10 @@ namespace ERP.Api.Controllers
     public class ClientsController : BaseController
     {
         private readonly IClientAppService _clientAppService;
-        private readonly IUnitOfWork _uow;
 
-        public ClientsController(NotificationContext notificationContext, IClientAppService clientAppService, IUnitOfWork uow) : base(notificationContext)
+        public ClientsController(NotificationContext notificationContext, IClientAppService clientAppService) : base(notificationContext)
         {
             _clientAppService = clientAppService;
-            _uow = uow;
         }
 
         [HttpGet]
@@ -40,8 +37,6 @@ namespace ERP.Api.Controllers
         {
             await _clientAppService.Insert(clientViewModel);
 
-            await _uow.SaveChangesAsync();
-
             return Response();
         }
 
@@ -50,8 +45,6 @@ namespace ERP.Api.Controllers
         {
             await _clientAppService.Update(id, clientViewModel);
 
-            await _uow.SaveChangesAsync();
-
             return Response();
         }
 
@@ -59,8 +52,6 @@ namespace ERP.Api.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _clientAppService.Delete(id);
-
-            await _uow.SaveChangesAsync();
 
             return Response();
         }

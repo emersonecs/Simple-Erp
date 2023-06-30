@@ -4,6 +4,7 @@ using ERP.Application.ViewModels;
 using ERP.Domain.Interfaces;
 using ERP.Domain.Models;
 using ERP.Domain.Notification;
+using ERP.Infra.Data.Context;
 
 namespace ERP.Application.Services
 {
@@ -12,12 +13,14 @@ namespace ERP.Application.Services
         private readonly IMapper _mapper;
         private readonly IClientRepository _clientRepository;
         private readonly NotificationContext _notificationContext;
+        private readonly IUnitOfWork _uow;
 
-        public ClientAppService(IMapper mapper, IClientRepository clientRepository, NotificationContext notificationContext)
+        public ClientAppService(IMapper mapper, IClientRepository clientRepository, NotificationContext notificationContext, IUnitOfWork uow)
         {
             _mapper = mapper;
             _clientRepository = clientRepository;
             _notificationContext = notificationContext;
+            _uow = uow;
         }
 
         public async Task<List<ClientViewModel>> GetAll()
@@ -39,6 +42,8 @@ namespace ERP.Application.Services
             var obj = _mapper.Map<Client>(clientViewModel);
 
             await _clientRepository.Insert(obj);
+
+            await _uow.SaveChangesAsync();
         }
 
         public async Task Update(int id, ClientEditViewModel clientViewModel)
@@ -53,6 +58,8 @@ namespace ERP.Application.Services
             client.Update(clientViewModel.Name, clientViewModel.Address, clientViewModel.District, clientViewModel.Number, clientViewModel.Email, clientViewModel.Phone);
 
             _clientRepository.Update(client);
+
+            await _uow.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
@@ -65,6 +72,8 @@ namespace ERP.Application.Services
             }
 
             _clientRepository.Delete(client);
+
+            await _uow.SaveChangesAsync();
         }
     }
 }

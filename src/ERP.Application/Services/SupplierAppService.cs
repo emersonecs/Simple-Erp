@@ -4,6 +4,7 @@ using ERP.Application.ViewModels;
 using ERP.Domain.Interfaces;
 using ERP.Domain.Models;
 using ERP.Domain.Notification;
+using ERP.Infra.Data.Context;
 
 namespace ERP.Application.Services
 {
@@ -12,12 +13,14 @@ namespace ERP.Application.Services
         private readonly IMapper _mapper;
         private readonly ISupplierRepository _supplierRepository;
         private readonly NotificationContext _notificationContext;
+        private readonly IUnitOfWork _uow;
 
-        public SupplierAppService(IMapper mapper, ISupplierRepository supplierRepository, NotificationContext notificationContext)
+        public SupplierAppService(IMapper mapper, ISupplierRepository supplierRepository, NotificationContext notificationContext, IUnitOfWork uow)
         {
             _mapper = mapper;
             _supplierRepository = supplierRepository;
             _notificationContext = notificationContext;
+            _uow = uow;
         }
 
         public async Task<List<SupplierViewModel>> GetAll()
@@ -39,6 +42,8 @@ namespace ERP.Application.Services
             var obj = _mapper.Map<Supplier>(supplierViewModel);
 
             await _supplierRepository.Insert(obj);
+
+            await _uow.SaveChangesAsync();
         }
 
         public async Task Update(int id, SupplierEditViewModel supplierViewModel)
@@ -53,6 +58,8 @@ namespace ERP.Application.Services
             supplier.Update(supplierViewModel.Name, supplierViewModel.Address, supplierViewModel.PhoneNumber, supplierViewModel.Email);
 
             _supplierRepository.Update(supplier);
+
+            await _uow.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
@@ -65,6 +72,8 @@ namespace ERP.Application.Services
             }
 
             _supplierRepository.Delete(supplier);
+
+            await _uow.SaveChangesAsync();
         }
     }
 }

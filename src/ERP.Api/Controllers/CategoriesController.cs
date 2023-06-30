@@ -1,7 +1,6 @@
 using ERP.Application.Interfaces;
 using ERP.Application.ViewModels;
 using ERP.Domain.Notification;
-using ERP.Infra.Data.Context;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.Api.Controllers
@@ -11,12 +10,10 @@ namespace ERP.Api.Controllers
     public class CategoriesController : BaseController
     {
         private readonly ICategoryAppService _categoryAppService;
-        private readonly IUnitOfWork _uow;
 
-        public CategoriesController(NotificationContext notificationContext, ICategoryAppService categoryAppService, IUnitOfWork uow) : base(notificationContext)
+        public CategoriesController(NotificationContext notificationContext, ICategoryAppService categoryAppService) : base(notificationContext)
         {
             _categoryAppService = categoryAppService;
-            _uow = uow;
         }
 
         [HttpGet]
@@ -40,8 +37,6 @@ namespace ERP.Api.Controllers
         {
             await _categoryAppService.Insert(categoryViewModel);
 
-            await _uow.SaveChangesAsync();
-
             return Response();
         }
 
@@ -50,8 +45,6 @@ namespace ERP.Api.Controllers
         {
             await _categoryAppService.Update(id, categoryViewModel);
 
-            await _uow.SaveChangesAsync();
-
             return Response();
         }
 
@@ -59,8 +52,6 @@ namespace ERP.Api.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _categoryAppService.Delete(id);
-
-            await _uow.SaveChangesAsync();
 
             return Response();
         }

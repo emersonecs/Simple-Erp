@@ -1,7 +1,6 @@
 using ERP.Application.Interfaces;
 using ERP.Application.ViewModels;
 using ERP.Domain.Notification;
-using ERP.Infra.Data.Context;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.Api.Controllers
@@ -11,12 +10,10 @@ namespace ERP.Api.Controllers
     public class ProductsController : BaseController
     {
         private readonly IProductAppService _productAppService;
-        private readonly IUnitOfWork _uow;
 
-        public ProductsController(NotificationContext notificationContext, IProductAppService productAppService, IUnitOfWork uow) : base(notificationContext)
+        public ProductsController(NotificationContext notificationContext, IProductAppService productAppService) : base(notificationContext)
         {
             _productAppService = productAppService;
-            _uow = uow;
         }
 
         [HttpGet]
@@ -40,8 +37,6 @@ namespace ERP.Api.Controllers
         {
             await _productAppService.Insert(productViewModel);
 
-            await _uow.SaveChangesAsync();
-
             return Response();
         }
 
@@ -50,8 +45,6 @@ namespace ERP.Api.Controllers
         {
             await _productAppService.Update(id, productViewModel);
 
-            await _uow.SaveChangesAsync();
-
             return Response();
         }
 
@@ -59,8 +52,6 @@ namespace ERP.Api.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _productAppService.Delete(id);
-
-            await _uow.SaveChangesAsync();
 
             return Response();
         }

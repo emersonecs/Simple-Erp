@@ -4,6 +4,7 @@ using ERP.Application.ViewModels;
 using ERP.Domain.Interfaces;
 using ERP.Domain.Models;
 using ERP.Domain.Notification;
+using ERP.Infra.Data.Context;
 
 namespace ERP.Application.Services
 {
@@ -12,12 +13,14 @@ namespace ERP.Application.Services
         private readonly IMapper _mapper;
         private readonly ICategoryRepository _categoryRepository;
         private readonly NotificationContext _notificationContext;
+        private readonly IUnitOfWork _uow;
 
-        public CategoryAppService(IMapper mapper, ICategoryRepository categoryRepository, NotificationContext notificationContext)
+        public CategoryAppService(IMapper mapper, ICategoryRepository categoryRepository, NotificationContext notificationContext, IUnitOfWork uow)
         {
             _mapper = mapper;
             _categoryRepository = categoryRepository;
             _notificationContext = notificationContext;
+            _uow = uow;
         }
 
         public async Task<List<CategoryViewModel>> GetAll()
@@ -39,6 +42,8 @@ namespace ERP.Application.Services
             var obj = _mapper.Map<Category>(categoryViewModel);
 
             await _categoryRepository.Insert(obj);
+
+            await _uow.SaveChangesAsync();
         }
 
         public async Task Update(int id, CategoryEditViewModel categoryViewModel)
@@ -53,6 +58,8 @@ namespace ERP.Application.Services
             category.Update(categoryViewModel.Name, categoryViewModel.Description);
 
             _categoryRepository.Update(category);
+
+            await _uow.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
@@ -65,6 +72,8 @@ namespace ERP.Application.Services
             }
 
             _categoryRepository.Delete(category);
+
+            await _uow.SaveChangesAsync();
         }
     }
 }
