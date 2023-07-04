@@ -10,7 +10,9 @@ namespace ERP.Application.ViewModels
         public string BarCode { get; set; }
         public decimal Price { get; set; }
         public int StockQuantity { get; set; }
-        public DateTime CreationDate { get; }
+        public DateTime CreationDate { get; set; }
+        public int? SupplierId { get; set; }
+        public int? CategoryId { get; set; }
     }
 
     public class ProductInsertViewModel
