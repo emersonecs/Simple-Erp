@@ -1,0 +1,71 @@
+﻿@page "/fornecedor"
+@using ERP.Application.Interfaces
+@using ERP.Application.ViewModels
+@inject ISupplierAppService SupplierAppService
+@inject NavigationManager NavigationManager
+
+<div class="card">
+    <div class="card-body">
+        <div class="row ">
+            <div class="col-6">
+                <h3>Fornecedor</h3>
+            </div>
+            <div class="col-6 text-end">
+                <button type="button" @onclick='() => NavigationManager.NavigateTo("/fornecedor/new")' class="btn btn-primary"><i class="fas fa-plus"></i> Novo</button>
+            </div>
+        </div>
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th style="width: 10px">ID</th>
+                    <th>Nome</th>
+                    <th>Endereço</th>
+                    <th>Numero de telefone</th>
+                    <th>Email</th>
+                    <th>Data da criação</th>
+                    <th style="width: 11.5rem">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var supplier in _supplier)
+                {
+                    <tr>
+                        <td>@supplier.Id</td>
+                        <td>@supplier.Name</td>
+                        <td>@supplier.Address</td>
+                        <td>@supplier.PhoneNumber</td>
+                        <td>@supplier.Email</td>
+                        <td>@supplier.CreationDate</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" @onclick="() => Edit(supplier.Id)">Editar</button>
+                            <button type="button" class="btn btn-danger" @onclick="() => Delete(supplier)">Remover</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private List<SupplierViewModel> _supplier = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _supplier = await SupplierAppService.GetAll();
+    }
+
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"fornecedor/edit/{id}");
+    }
+
+    private async void Delete(SupplierViewModel obj)
+    {
+        await SupplierAppService.Delete(obj.Id);
+
+        _supplier.Remove(obj);
+
+        StateHasChanged();
+    }
+}

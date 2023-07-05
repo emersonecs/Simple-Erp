@@ -1,0 +1,65 @@
+﻿@page "/categoria"
+@using ERP.Application.Interfaces
+@using ERP.Application.ViewModels
+@inject ICategoryAppService CategoryAppService
+@inject NavigationManager NavigationManager
+
+<div class="card">
+    <div class="card-body">
+        <div class="row ">
+            <div class="col-6">
+                <h3>Categoria</h3>
+            </div>
+            <div class="col-6 text-end">
+                <button type="button" @onclick='() => NavigationManager.NavigateTo("/categoria/new")' class="btn btn-primary"><i class="fas fa-plus"></i> Novo</button>
+            </div>
+        </div>
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th style="width: 10px">ID</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th style="width: 11.5rem">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in _categories)
+                {
+                    <tr>
+                        <td>@category.Id</td>
+                        <td>@category.Name</td>
+                        <td>@category.Description</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" @onclick="() => Edit(category.Id)">Editar</button>
+                            <button type="button" class="btn btn-danger" @onclick="() => Delete(category)">Remover</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private List<CategoryViewModel> _categories = new ();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _categories = await CategoryAppService.GetAll();
+    }
+
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"categoria/edit/{id}");
+    }
+
+    private async void Delete(CategoryViewModel obj)
+    {
+        await CategoryAppService.Delete(obj.Id);
+
+        _categories.Remove(obj);
+
+        StateHasChanged();
+    }
+}

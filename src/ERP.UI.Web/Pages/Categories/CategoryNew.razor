@@ -1,0 +1,50 @@
+﻿@page "/categoria/new"
+@using ERP.Application.ViewModels
+@using ERP.Application.Interfaces
+@using ERP.Domain.Notification
+@inject NavigationManager NavigationManager
+@inject ICategoryAppService CategoryAppService
+@inject NotificationContext NotificationContext
+
+<div>
+    <h3>Nova Categoria</h3>
+
+    <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="card card-primary">
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="name">Nome</label>
+                        <InputText id="name" class="form-control" placeholder="Nome" @bind-Value="@_model.Name" />
+                        <ValidationMessage For="@(() => _model.Name)" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="description">Descrição</label>
+                        <InputText id="description" class="form-control" placeholder="Descrição" @bind-Value="@_model.Description" />
+                        <ValidationMessage For="@(() => _model.Description)" />
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <button type="button" @onclick='() => NavigationManager.NavigateTo("/categoria")' class="btn btn-secondary">Voltar</button>
+                    <button type="submit" class="btn btn-primary" disabled="@(!context.IsModified() || !context.Validate())">Atualizar</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private CategoryInsertViewModel _model = new();
+
+    private async void HandleValidSubmit()
+    {
+        await CategoryAppService.Insert(_model);
+
+        if (!NotificationContext.HasNotifications)
+            NavigationManager.NavigateTo("/categoria");
+    }
+}

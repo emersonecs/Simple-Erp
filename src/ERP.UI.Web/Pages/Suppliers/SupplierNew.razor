@@ -1,0 +1,62 @@
+﻿@page "/fornecedor/new"
+@using ERP.Application.ViewModels
+@using ERP.Application.Interfaces
+@using ERP.Domain.Notification
+@inject NavigationManager NavigationManager
+@inject ISupplierAppService SupplierAppService
+@inject NotificationContext NotificationContext
+
+<div>
+    <h3>Novo Fornecedeor</h3>
+
+    <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="card card-primary">
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="name">Nome</label>
+                        <InputText id="name" class="form-control" placeholder="Nome" @bind-Value="@_model.Name" />
+                        <ValidationMessage For="@(() => _model.Name)" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="phoneNumber">Numero de telefone</label>
+                        <InputText id="phoneNumber" class="form-control" placeholder="Numero de telefone" @bind-Value="@_model.PhoneNumber" />
+                        <ValidationMessage For="@(() => _model.PhoneNumber)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="address">Endereço</label>
+                        <InputText id="address" class="form-control" placeholder="Endereço" @bind-Value="@_model.Address" />
+                        <ValidationMessage For="@(() => _model.Address)" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="email">Email</label>
+                        <InputText id="email" class="form-control" placeholder="Email" @bind-Value="@_model.Email" />
+                        <ValidationMessage For="@(() => _model.Email)" />
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <button type="button" @onclick='() => NavigationManager.NavigateTo("/fornecedor")' class="btn btn-secondary">Voltar</button>
+                    <button type="submit" class="btn btn-primary" disabled="@(!context.IsModified() || !context.Validate())">Atualizar</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private SupplierInsertViewModel _model = new();
+
+    private async void HandleValidSubmit()
+    {
+        await SupplierAppService.Insert(_model);
+
+        if (!NotificationContext.HasNotifications)
+            NavigationManager.NavigateTo("/fornecedor");
+    }
+}
