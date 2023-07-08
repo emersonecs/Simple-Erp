@@ -50,6 +50,9 @@ namespace ERP.UI.Web
             builder.Services.AddScoped<ISupplierAppService, SupplierAppService>();
             builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 
+            builder.Services.AddScoped<IClientAppService, ClientAppService>();
+            builder.Services.AddScoped<IClientRepository, ClientRepository>();
+
             return builder.Build();
         }
     }

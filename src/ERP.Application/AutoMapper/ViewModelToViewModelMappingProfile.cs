@@ -10,6 +10,7 @@ namespace ERP.Application.AutoMapper
             CreateMap<ProductViewModel, ProductEditViewModel>();
             CreateMap<SupplierViewModel, SupplierEditViewModel>();
             CreateMap<CategoryViewModel, CategoryEditViewModel>();
+            CreateMap<ClientViewModel, ClientEditViewModel>();
         }
     }
 }

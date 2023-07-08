@@ -1,0 +1,73 @@
+﻿@page "/produto"
+@using ERP.Application.Interfaces
+@using ERP.Application.ViewModels
+@inject IProductAppService ProductAppService
+@inject NavigationManager NavigationManager
+
+<div class="card">
+    <div class="card-body">
+        <div class="row ">
+            <div class="col-6">
+                <h3>Produto</h3>
+            </div>
+            <div class="col-6 text-end">
+                <button type="button" @onclick='() => NavigationManager.NavigateTo("/produto/new")' class="btn btn-primary"><i class="fas fa-plus"></i> Novo</button>
+            </div>
+        </div>
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th style="width: 10px">ID</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Codigo de barras</th>
+                    <th>Qntd. Estoque</th>
+                    <th>Data da criação</th>
+                    <th style="width: 11.5rem">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var product in _products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price</td>
+                    <td>@product.BarCode</td>
+                    <td>@product.StockQuantity</td>
+                    <td>@product.CreationDate</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" @onclick="() => Edit(product.Id)">Editar</button>
+                        <button type="button" class="btn btn-danger" @onclick="() => Delete(product)">Remover</button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private List<ProductViewModel> _products = new List<ProductViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _products = await ProductAppService.GetAll();
+    }
+
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"produto/edit/{id}");
+    }
+
+    private async void Delete(ProductViewModel obj)
+    {
+        await ProductAppService.Delete(obj.Id);
+
+        _products.Remove(obj);
+
+        StateHasChanged();
+    }
+}

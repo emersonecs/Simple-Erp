@@ -1,0 +1,83 @@
+﻿@page "/cliente/edit/{Id:int}"
+@using ERP.Application.ViewModels
+@using ERP.Application.Interfaces
+@using AutoMapper
+@inject NavigationManager NavigationManager
+@inject IClientAppService ClientAppService
+@inject IMapper Mapper;
+
+<div>
+    <h3>Cliente: @Id</h3>
+
+    <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="card card-primary">
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <label for="name">Nome</label>
+                        <InputText id="name" class="form-control" placeholder="Nome" @bind-Value="@_model.Name" />
+                        <ValidationMessage For="@(() => _model.Name)" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="email">Email</label>
+                        <InputText id="email" class="form-control" placeholder="Email" @bind-Value="@_model.Email" />
+                        <ValidationMessage For="@(() => _model.Email)" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="phone">Telefone</label>
+                        <InputText id="phone" class="form-control" placeholder="Telefone" @bind-Value="@_model.Phone" />
+                        <ValidationMessage For="@(() => _model.Phone)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="address">Endereço</label>
+                        <InputText id="address" class="form-control" placeholder="Endereço" @bind-Value="@_model.Address" />
+                        <ValidationMessage For="@(() => _model.Address)" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="district">Bairro</label>
+                        <InputText id="district" class="form-control" placeholder="Bairro" @bind-Value="@_model.District" />
+                        <ValidationMessage For="@(() => _model.District)" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="number">Número</label>
+                        <InputNumber id="number" class="form-control" placeholder="Número" @bind-Value="@_model.Number" />
+                        <ValidationMessage For="@(() => _model.Number)" />
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <button type="button" @onclick='() => NavigationManager.NavigateTo("/cliente")' class="btn btn-secondary">Voltar</button>
+                    <button type="submit" class="btn btn-primary" disabled="@(!context.IsModified() || !context.Validate())">Atualizar</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ClientEditViewModel _model = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = await ClientAppService.GetById(Id);
+        if (client == null)
+            NavigationManager.NavigateTo("/cliente");
+
+        Mapper.Map(client, _model);
+    }
+
+    private async void HandleValidSubmit()
+    {
+        await ClientAppService.Update(Id, _model);
+
+        NavigationManager.NavigateTo("/cliente");
+    }
+}

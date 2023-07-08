@@ -1,0 +1,73 @@
+﻿@page "/cliente"
+@using ERP.Application.Interfaces
+@using ERP.Application.ViewModels
+@inject IClientAppService ClientAppService
+@inject NavigationManager NavigationManager
+
+<div class="card">
+    <div class="card-body">
+        <div class="row ">
+            <div class="col-6">
+                <h3>Cliente</h3>
+            </div>
+            <div class="col-6 text-end">
+                <button type="button" @onclick='() => NavigationManager.NavigateTo("/cliente/new")' class="btn btn-primary"><i class="fas fa-plus"></i> Novo</button>
+            </div>
+        </div>
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th style="width: 10px">ID</th>
+                    <th>Nome</th>
+                    <th>Endereço</th>
+                    <th>Bairro</th>
+                    <th>Número</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th style="width: 11.5rem">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var client in _categories)
+                {
+                    <tr>
+                        <td>@client.Id</td>
+                        <td>@client.Name</td>
+                        <td>@client.Address</td>
+                        <td>@client.District</td>
+                        <td>@client.Number</td>
+                        <td>@client.Email</td>
+                        <td>@client.Phone</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" @onclick="() => Edit(client.Id)">Editar</button>
+                            <button type="button" class="btn btn-danger" @onclick="() => Delete(client)">Remover</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private List<ClientViewModel> _categories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _categories = await ClientAppService.GetAll();
+    }
+
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"cliente/edit/{id}");
+    }
+
+    private async void Delete(ClientViewModel obj)
+    {
+        await ClientAppService.Delete(obj.Id);
+
+        _categories.Remove(obj);
+
+        StateHasChanged();
+    }
+}
